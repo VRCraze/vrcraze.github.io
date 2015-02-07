@@ -1,0 +1,197 @@
+---
+
+layout: default
+title: 建立个人博客
+tags: [tag1, tag2]
+categories: [cat1, cat2]
+---
+
+#软件使用方法
+
+##Jekyll
+Jekyll是一个静态网站生成器。Jekyll使用一个包含各种格式的原始文本文件的目录结构模板，使用转换器（如Markdown）和Liquid渲染器，生成完整的、可发布的网页。Jekyll也是Github Page后台使用的引擎，因此使用Jekyll编写的网站可以直接使用Github的服务器来发布。
+
+### 基本使用方法
+
+#### build
+语法：
+`jekyll build`：当前文件夹中的内容生成到`./site`目录中。
+`jekyll serve`：启用一个服务器。在localhost/4000上访问。加上 `--detach`选项，脱离控制台运行。如果要终止服务器，使用`ps aux | grep jekyll`找到PID，然后用`kill -9 PID`终止服务器进程。默认情况下，`serve`命令会监视内容变化，使用`--no-watch`选项禁用监控。
+
+#### 目录模板结构
+
+    .
+    |----_config.yml
+    |----_drafts
+    |     |----草稿1.textile
+    |     |----草稿2.markdown
+    |----_includes
+    |     |----footer.html
+    |     |----header.html
+    |----_layouts
+    |     |----default.html
+    |     |----post.html
+    |----_posts
+    |     |----更新1.textile
+    |     |----更新2.textile
+    |----_data
+    |     |----数据1.yml
+    |----_site
+    |----index.html
+
+###[目录模板说明](http://jekyllrb.com/docs/structure/)
+
+#### _config,yml
+
+配置项
+
+##### 全局配置项
+
+** Site Source **
+** Site Destination **
+** Safe **
+** Exclude **：这里面的文件/文件夹不会被转换器处理。只能是相对于站点的路径，不能是外部路径。
+** Include **
+** Keep files **
+** Time Zone **
+** Encoding **
+** Defaults **：定义一些全局的变量。
+
+##### 自定义配置项
+**[Permalinks](http://jekyllrb.com/docs/permalinks/)**
+可以为自己的文章自定义Url。可以在配置文件中全局定义，也可以使用YAML Front Matter为每篇文章单独定义。可以选择内置的url风格，也可以自定义url风格。缺省的风格是时间风格，即`/年/月/日/文章名.html`。
+Permalinks使用一个模板url来构造，其中的动态元素用冒号隔开，例如缺省的**时间风格**的定义为：
+`/:categories/:year/:month/:day/:title.html`。
+其他内置风格包括：
+_TODO_
+
+**tagline**
+口号（slogan）。一般和网页、文章的title放在一起。
+
+##### Build命令选项
+
+##### Serve命令选项
+
+##### 配置项的优先级
+
+##### Jekyll的缺省配置项
+
+##### Markdown额外选项
+
+Jekyll支持的各种Markdown渲染器会提供一些额外的选项。
+
+**Redcarpet**
+
+**Karmdown**
+
+**自定义Markdown处理器**
+
+
+#### _drafts
+
+未经发布的文档（草稿）
+
+#### _includes
+
+可被布局和草稿重用的一些代码片段。例如，可以使用liquid的`{% include file.ext %}`标签来包含该文件夹中的`_includes/file.ext`。
+**OYF: Jekyll build时会对上面的{% include file.ext %}进行处理，提示找不到file.ext错误。因此，发布时要将这些内容去掉！**
+
+#### _layouts
+一些模板，将草稿包装成完整的页面。**Layouts are chosen on a post- by-post basis in the YAML Front Matter**。使用liquid的`{{ content }}`标签可以将内容注入网页。
+
+#### _posts
+需要更新的内容。必须遵守命名规范：
+`年-月-日-文档标题.markup`。可以为每个文档指定permalinks，但是日期和标记语言只能通过文件名来标识。
+
+#### _data
+存储结构化数据。jekyll引擎会自动加载该文件夹中的所有yaml文件（.yml或.yaml）。例如，有一个`member.yml`，则可以在文档中使用`site.data.members`。
+
+#### _site
+存储生成的网页。应该将该文件夹加入`.gitignore`。
+
+#### index.html
+如果文件中中YRML Front Matter的内容，jekyll会对其进行处理。因此，作为首页可以使用.html, .markdown, .md, .textile等各种文件格式。
+
+#### 其他文件/文件夹
+其他非模板的文件/文件夹，如css、images文件夹，favicon.ico这些文件等。
+
+#### Pages
+
+可以在主目录中添加任意的html页面，但是要在页面中加入Front Matter才能注册页面。页面注册后可以通过`sites.pages`来引用。
+页面可以形成任意文件夹结构，文件夹结构会影响页面的url，例如页面目录结构为：
+
+    .
+    |-- people
+        |-- bob
+            |-- essay.html
+
+得到的url为：
+`http://yourdomain.com/people/bob/essay.html`
+
+推荐提供以下页面：
+- **index.html**：整个站点的入口页面。
+-  **404.html** 
+- **sitemap.html**：用于SEO
+- **abuot.html**：网站的说明页面
+
+### [Front Matter](http://jekyllrb.com/docs/frontmatter/)
+
+Front Matter是Jekyll独具特色的功能。任何包含YAML front matter block的文件都会被Jekyll进行特殊处理。使用Front Matter只需要在文件头加上标识：
+
+`---`
+`layout: post`
+`title: title`
+`---`
+
+在三横杠中可以添加任意的变量。变量可以是预定义的，也可以是自定义的。这些变量可以在本文件或其他任何layouts、includes中使用Liquid tag引用，例如`{{page.title}}`。
+
+#### 预定义变量
+
+#### 自定义变量
+
+### 写博客
+
+写博客只需要管理本地电脑上的一个文本文件夹，不需要关心文章的渲染和发布。所有的博客文章都放在`_posts`文件夹中。文章可以是Markdown、HTML，或者其他任何可以被相应转换器（Converter）处理的格式。所有的文章必须带Front Matter block。这些文章会被转换成HTML页面，成为静态网站的一部分。
+文章名必须符合规范，如：
+
+`2014-01-23-这是-一篇-博客-文章.md`
+
+#### 包含图片等资源
+
+一般做法是在根目录创建一个名为	`assets`或`downloads`的文件夹。然后在文章用使用`site.url`变量来引用资源。例如：
+
+`![My helpful screenshot]({{ site.url }}/assets/screenshot.jpg)`
+
+链接一个本地pdf，供下载：
+
+`you can [get the PDF]({{ site.url }}/assets/mydoc.pdf) directly`
+
+如果站点只会从根目录开始，也可以忽略`site.url`，使用相对路径，如`/path/file.jpg`。
+
+#### 制作文章目录
+
+使用Liquid模板语言和相应tags可以方便地生成文章目录，如：
+
+    <ul>
+        {% for post in site.posts %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+#### 文章摘要
+
+Jekyll会自动将文章的第一个块，即从文章开头到`except_separator`之间的内容作为文章摘要。文章摘要可以用`post.except`引用。也可以在文章的YAML Front Matter中使用`except`变量设置独立的摘要。将`except_separator`设为`""`可以引用文章摘要。
+
+#### 语法高亮显示
+
+Jekyll支持程序代码的语法高亮显示，使用Pygments或Rouge。使用方法为在需要高亮显示的代码段开头和结尾分别加上：
+`{% highlight ruby %}`
+`{% endhighlight %}`
+
+## [Liquid模板](http://jekyllrb.com/docs/templates/)
+
+参考：
+1. [Liquid for Designers](https://github.com/shopify/liquid/wiki/liquid-for-designers)
+2. 
